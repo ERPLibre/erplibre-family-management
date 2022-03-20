@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Root menu-->
+
+    <menuitem
+        id="famille_alimentation_nourrisson"
+        name="Famille Alimentation Nourrisson"
+        sequence="20"
+        web_icon="famille_alimentation_nourrisson,static/description/icon.png"
+    />
+
+    <!--Sub menu-->
+
+    <menuitem id="menu" name="Menu" sequence="1" parent="famille_alimentation_nourrisson" />
+
+    <!--Child menu-->
+
+    <menuitem
+        id="alimentation_nourrisson"
+        name="Alimentation nourrisson"
+        action="famille_alimentation_nourrisson_alimentation_nourrisson_action_window"
+        sequence="1"
+        parent="menu"
+    />
+</odoo>
