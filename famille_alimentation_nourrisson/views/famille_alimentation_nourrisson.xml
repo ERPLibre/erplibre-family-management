@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="famille_alimentation_nourrisson_view_form" model="ir.ui.view">
+        <field name="name">famille_alimentation_nourrisson_form</field>
+        <field name="model">famille.alimentation.nourrisson</field>
+        <field name="arch" type="xml">
+            <form string="Titre">
+                <sheet>
+                    <group>
+                        <field name="commentaire" />
+                    </group>
+                    <group>
+                        <field name="date_debut" />
+                    </group>
+                    <group>
+                        <field name="date_fin" />
+                    </group>
+                    <group>
+                        <field name="mictions" />
+                    </group>
+                    <group>
+                        <field name="selles" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="famille_alimentation_nourrisson_view_graph" model="ir.ui.view">
+        <field name="name">famille_alimentation_nourrisson_graph</field>
+        <field name="model">famille.alimentation.nourrisson</field>
+        <field name="arch" type="xml">
+            <graph string="Famille alimentation nourrisson">
+                <field name="commentaire" type="row" />
+                <field name="date_debut" type="row" />
+                <field name="date_fin" type="row" />
+                <field name="mictions" type="row" />
+                <field name="selles" type="row" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="famille_alimentation_nourrisson_view_kanban" model="ir.ui.view">
+        <field name="name">famille_alimentation_nourrisson_kanban</field>
+        <field name="model">famille.alimentation.nourrisson</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="commentaire" />
+                <field name="date_debut" />
+                <field name="date_fin" />
+                <field name="mictions" />
+                <field name="selles" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <ul>
+                                    <li class="mb4">
+                                        <strong>
+                                            <field name="commentaire" />
+                                        </strong>
+                                    </li>
+                                    <li class="mb4">
+                                        <strong>
+                                            <field name="date_debut" />
+                                        </strong>
+                                    </li>
+                                    <li class="mb4">
+                                        <strong>
+                                            <field name="date_fin" />
+                                        </strong>
+                                    </li>
+                                    <li class="text-success float-right mb4" t-if="record.mictions.raw_value">
+                                        <i aria-label="Ok" class="fa fa-circle" role="img" title="Ok" />
+                                    </li>
+                                    <li class="text-danger float-right mb4" t-if="!record.mictions.raw_value">
+                                        <i aria-label="Invalid" class="fa fa-circle" role="img" title="Invalid" />
+                                    </li>
+                                    <li class="text-success float-right mb4" t-if="record.selles.raw_value">
+                                        <i aria-label="Ok" class="fa fa-circle" role="img" title="Ok" />
+                                    </li>
+                                    <li class="text-danger float-right mb4" t-if="!record.selles.raw_value">
+                                        <i aria-label="Invalid" class="fa fa-circle" role="img" title="Invalid" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="famille_alimentation_nourrisson_view_pivot" model="ir.ui.view">
+        <field name="name">famille_alimentation_nourrisson_pivot</field>
+        <field name="model">famille.alimentation.nourrisson</field>
+        <field name="arch" type="xml">
+            <pivot string="Famille alimentation nourrisson">
+                <field name="commentaire" type="row" />
+                <field name="date_debut" type="row" />
+                <field name="date_fin" type="row" />
+                <field name="mictions" type="row" />
+                <field name="selles" type="row" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="famille_alimentation_nourrisson_view_search" model="ir.ui.view">
+        <field name="name">famille_alimentation_nourrisson_search</field>
+        <field name="model">famille.alimentation.nourrisson</field>
+        <field name="arch" type="xml">
+            <search string="Famille alimentation nourrisson">
+                <filter domain="[('commentaire','!=',False)]" name="commentaire" string="Allaitement" />
+                <filter domain="[('date_debut','!=',False)]" name="date_debut" string="Date d&#233;but" />
+                <filter domain="[('date_fin','!=',False)]" name="date_fin" string="Date fin" />
+                <filter domain="[('mictions','=',True)]" name="mictions" string="Mictions" />
+                <filter domain="[('selles','=',True)]" name="selles" string="Selles" />
+            </search>
+        </field>
+    </record>
+
+    <record id="famille_alimentation_nourrisson_view_tree" model="ir.ui.view">
+        <field name="name">famille_alimentation_nourrisson_tree</field>
+        <field name="model">famille.alimentation.nourrisson</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="commentaire" />
+                <field name="date_debut" />
+                <field name="date_fin" />
+                <field name="mictions" />
+                <field name="selles" />
+            </tree>
+        </field>
+    </record>
+
+    <act_window
+        id="famille_alimentation_nourrisson_alimentation_nourrisson_action_window"
+        name="Alimentation nourrisson"
+        res_model="famille.alimentation.nourrisson"
+        view_mode="kanban,tree,pivot,graph,form"
+    />
+</odoo>

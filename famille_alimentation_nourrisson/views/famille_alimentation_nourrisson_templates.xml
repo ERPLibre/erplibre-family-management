@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="portal_create_famille_alimentation_nourrisson" name="Create Famille Alimentation Nourrisson">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="text-center">Send a new famille alimentation nourrisson</h1>
+                    </div>
+                </div>
+            </div>
+            <form
+                action="/submitted/famille_alimentation_nourrisson"
+                method="POST"
+                class="form-horizontal mt32"
+                enctype="multipart/form-data"
+            >
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="name">Name</label>
+                    <div class="col-md-7 col-sm-8">
+                        <input type="text" class="form-control" name="name" t-attf-value="#{name}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="commentaire">Commentaire</label>
+                    <div class="col-md-7 col-sm-8">
+        <!-- prettier-ignore-start --><textarea class="form-control" name="commentaire" style="min-height: 120px"><t t-esc="default_commentaire"/></textarea><!-- prettier-ignore-end -->
+        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="date_debut">Date_debut</label>
+                    <div class="col-md-7 col-sm-8">
+                        <div class="input-group date" data-target-input="nearest" t-att-id="date_debut_datepicker">
+                            <input
+                                type="text"
+                                class="form-control datetimepicker-input"
+                                t-att-data-target="date_debut_datepicker"
+                                t-att-name="prefix"
+                                t-att-value="default_date_debut"
+                            />
+                            <div
+                                class="input-group-append"
+                                t-att-data-target="date_debut_datepicker"
+                                data-toggle="datetimepicker"
+                            >
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="date_fin">Date_fin</label>
+                    <div class="col-md-7 col-sm-8">
+                        <div class="input-group date" data-target-input="nearest" t-att-id="date_fin_datepicker">
+                            <input
+                                type="text"
+                                class="form-control datetimepicker-input"
+                                t-att-data-target="date_fin_datepicker"
+                                t-att-name="prefix"
+                                t-att-value="default_date_fin"
+                            />
+                            <div
+                                class="input-group-append"
+                                t-att-data-target="date_fin_datepicker"
+                                data-toggle="datetimepicker"
+                            >
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="mictions">Mictions</label>
+                    <div class="col-md-7 col-sm-8">
+                        <input
+                            type="checkbox"
+                            name="mictions"
+                            t-att-id="mictions"
+                            t-att-value="True"
+                            t-att-checked="default_mictions"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-sm-4 control-label" for="selles">Selles</label>
+                    <div class="col-md-7 col-sm-8">
+                        <input
+                            type="checkbox"
+                            name="selles"
+                            t-att-id="selles"
+                            t-att-value="True"
+                            t-att-checked="default_selles"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                        <button class="btn btn-primary btn-lg">Submit Famille Alimentation Nourrisson</button>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+
+    <template
+        id="famille_alimentation_nourrisson.portal_my_famille_alimentation_nourrisson"
+        name="My Famille Alimentation Nourrisson"
+    >
+        <t t-call="portal.portal_layout">
+            <t t-set="o_portal_fullwidth_alert">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t
+                        t-set="backend_url"
+                        t-value="'/web#return_label=Website&amp;model=famille.alimentation.nourrisson&amp;id=%s&amp;view_type=form' % (famille_alimentation_nourrisson.id)"
+                    />
+                </t>
+            </t>
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <h5 class="mb-0">
+                        <small class="text-muted">Famille Alimentation Nourrisson -</small>
+                        <span t-field="famille_alimentation_nourrisson.name" />
+                    </h5>
+                </t>
+                <t t-set="card_body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <b>Allaitement:</b>
+                            <span t-field="famille_alimentation_nourrisson.commentaire" />
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <b>Date d&#233;but:</b>
+                            <span t-field="famille_alimentation_nourrisson.date_debut" />
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <b>Date fin:</b>
+                            <span t-field="famille_alimentation_nourrisson.date_fin" />
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <b>Mictions:</b>
+                            <span t-field="famille_alimentation_nourrisson.mictions" />
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <b>Selles:</b>
+                            <span t-field="famille_alimentation_nourrisson.selles" />
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template
+        id="famille_alimentation_nourrisson.portal_my_famille_alimentation_nourrissons"
+        name="My Famille Alimentation Nourrissons"
+    >
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Famille Alimentation Nourrissons</t>
+            </t>
+            <form method="POST" t-attf-action="/new/famille_alimentation_nourrisson">
+                <button
+                    name="create_new_famille_alimentation_nourrisson"
+                    type="action"
+                    class="btn btn-primary"
+                    style="float: right; margin-right: 5px;"
+                >
+                    New Famille Alimentation Nourrisson
+                </button>
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+            </form>
+            <t t-if="not famille_alimentation_nourrissons">
+                <div class="alert alert-warning mt8" role="alert">There are no famille_alimentation_nourrissons.</div>
+            </t>
+            <t t-if="famille_alimentation_nourrissons" t-call="portal.portal_table">
+                <tbody>
+                    <tr t-foreach="famille_alimentation_nourrissons" t-as="famille_alimentation_nourrisson">
+                        <td>
+                            <a
+                                t-attf-href="/my/famille_alimentation_nourrisson/#{famille_alimentation_nourrisson.id}?{{ keep_query() }}"
+                            >
+                                <span t-field="famille_alimentation_nourrisson.name" />
+                            </a>
+                        </td>
+                        <td class="text-right" />
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template
+        id="famille_alimentation_nourrisson.portal_my_home"
+        name="Portal My Home: Famille_Alimentation_Nourrisson entries"
+        inherit_id="portal.portal_my_home"
+    >
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="famille_alimentation_nourrisson_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Famille Alimentation Nourrissons</t>
+                <t t-set="url" t-value="'/my/famille_alimentation_nourrissons'" />
+                <t t-set="count" t-value="famille_alimentation_nourrisson_count" />
+            </t>
+            <a
+                t-if="not famille_alimentation_nourrisson_count"
+                role="button"
+                class="btn btn-primary btn-block mb8"
+                href="/new/famille_alimentation_nourrisson"
+            >
+                <i class="fa fa-plus-circle" />
+                Famille Alimentation Nourrisson
+            </a>
+        </xpath>
+    </template>
+
+    <template
+        id="famille_alimentation_nourrisson.portal_layout"
+        name="Portal layout: Famille_Alimentation_Nourrisson menu entry"
+        inherit_id="portal.portal_breadcrumbs"
+    >
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li
+                t-if="page_name in ('famille_alimentation_nourrisson', 'create_famille_alimentation_nourrisson') or famille_alimentation_nourrisson"
+                t-attf-class="breadcrumb-item #{'active ' if not famille_alimentation_nourrisson else ''}"
+            >
+                <a
+                    t-if="famille_alimentation_nourrisson or page_name == 'create_famille_alimentation_nourrisson'"
+                    t-attf-href="/my/famille_alimentation_nourrissons?{{ keep_query() }}"
+                >
+                    Famille Alimentation Nourrissons
+                </a>
+                <t t-else="">Famille Alimentation Nourrissons</t>
+            </li>
+            <li t-if="famille_alimentation_nourrisson" class="breadcrumb-item active">
+                <t t-esc="famille_alimentation_nourrisson.name" />
+            </li>
+        </xpath>
+    </template>
+</odoo>

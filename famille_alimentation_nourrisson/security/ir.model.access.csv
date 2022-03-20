@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+famille_alimentation_nourrisson_access_user_types_/_internal_user,famille_alimentation_nourrisson Access User types / Internal User,model_famille_alimentation_nourrisson,base.group_user,1,1,1,1
+famille_alimentation_nourrisson_access_user_types_/_portal,famille_alimentation_nourrisson Access User types / Portal,model_famille_alimentation_nourrisson,base.group_portal,1,1,1,1
