@@ -5,6 +5,11 @@
         <field name="model">famille.alimentation.nourrisson</field>
         <field name="arch" type="xml">
             <form string="Titre">
+                <header>
+                    <field name="fin_allaitement_different" invisible="1"/>
+                    <button name="action_fin_allaitement" string="Fin allaitement" type="object" class="oe_highlight"
+                        attrs="{'invisible' : [('fin_allaitement_different', '!=', False)]}"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="commentaire" />

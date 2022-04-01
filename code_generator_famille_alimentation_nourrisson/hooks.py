@@ -69,8 +69,8 @@ def post_init_hook(cr, e):
         }
         dct_field = {
             "commentaire": {
-                "code_generator_form_simple_view_sequence": 10,
-                "code_generator_sequence": 4,
+                "code_generator_form_simple_view_sequence": 11,
+                "code_generator_sequence": 6,
                 "code_generator_tree_view_sequence": 10,
                 "field_description": "Allaitement",
                 "help": (
@@ -80,8 +80,8 @@ def post_init_hook(cr, e):
                 "ttype": "text",
             },
             "date_debut": {
-                "code_generator_form_simple_view_sequence": 11,
-                "code_generator_sequence": 5,
+                "code_generator_form_simple_view_sequence": 12,
+                "code_generator_sequence": 7,
                 "code_generator_tree_view_sequence": 11,
                 "default_lambda": "lambda self: fields.Datetime.now()",
                 "field_description": "Date début",
@@ -89,8 +89,8 @@ def post_init_hook(cr, e):
                 "ttype": "datetime",
             },
             "date_fin": {
-                "code_generator_form_simple_view_sequence": 12,
-                "code_generator_sequence": 6,
+                "code_generator_form_simple_view_sequence": 13,
+                "code_generator_sequence": 8,
                 "code_generator_tree_view_sequence": 12,
                 "default_lambda": (
                     "lambda self: fields.Datetime.now() + timedelta(hours=1)"
@@ -98,9 +98,17 @@ def post_init_hook(cr, e):
                 "field_description": "Date fin",
                 "ttype": "datetime",
             },
+            "fin_allaitement_different": {
+                "code_generator_compute": "_compute_fin_allaitement_different",
+                "code_generator_form_simple_view_sequence": 10,
+                "code_generator_sequence": 4,
+                "field_description": "Fin Allaitement Different",
+                "store": True,
+                "ttype": "boolean",
+            },
             "mictions": {
-                "code_generator_form_simple_view_sequence": 13,
-                "code_generator_sequence": 8,
+                "code_generator_form_simple_view_sequence": 14,
+                "code_generator_sequence": 10,
                 "code_generator_tree_view_sequence": 13,
                 "field_description": "Mictions",
                 "help": (
@@ -110,14 +118,13 @@ def post_init_hook(cr, e):
             },
             "name": {
                 "code_generator_compute": "_compute_name",
-                "code_generator_sequence": 3,
+                "code_generator_sequence": 5,
                 "field_description": "Name",
-                "store": True,
                 "ttype": "char",
             },
             "selles": {
-                "code_generator_form_simple_view_sequence": 14,
-                "code_generator_sequence": 7,
+                "code_generator_form_simple_view_sequence": 15,
+                "code_generator_sequence": 9,
                 "code_generator_tree_view_sequence": 14,
                 "field_description": "Selles",
                 "help": (
@@ -152,6 +159,14 @@ from odoo import _, api, fields, models""",
             # Generate code model
             lst_value = [
                 {
+                    "code": """self.write({"date_fin": fields.Datetime.now()})""",
+                    "name": "action_fin_allaitement",
+                    "param": "self",
+                    "sequence": 0,
+                    "m2o_module": code_generator_id.id,
+                    "m2o_model": model_famille_alimentation_nourrisson.id,
+                },
+                {
                     "code": """super(FamilleAlimentationNourrisson, self)._compute_access_url()
 for famille_alimentation_nourrisson in self:
     famille_alimentation_nourrisson.access_url = (
@@ -160,21 +175,37 @@ for famille_alimentation_nourrisson in self:
     )""",
                     "name": "_compute_access_url",
                     "param": "self",
-                    "sequence": 0,
+                    "sequence": 1,
                     "m2o_module": code_generator_id.id,
                     "m2o_model": model_famille_alimentation_nourrisson.id,
                 },
                 {
                     "code": """for record in self:
-    record.code = (
-        f"{record.date_debut} S {record.selles} M {record.mictions}"
+    date_timedelta = record.date_fin - record.date_debut
+    # time is different if it's not 1 hour delta
+    record.fin_allaitement_different = (
+        date_timedelta.total_seconds() != 3600
     )""",
+                    "name": "_compute_fin_allaitement_different",
+                    "decorator": '@api.depends("date_debut", "date_fin")',
+                    "param": "self",
+                    "sequence": 2,
+                    "m2o_module": code_generator_id.id,
+                    "m2o_model": model_famille_alimentation_nourrisson.id,
+                },
+                {
+                    "code": '''for record in self:
+    record.name = str(record.date_debut)
+    if record.selles:
+        record.name += " SELLE"
+    if record.mictions:
+        record.name += " MICTION"''',
                     "name": "_compute_name",
                     "decorator": (
                         '@api.depends("date_debut", "selles", "mictions")'
                     ),
                     "param": "self",
-                    "sequence": 1,
+                    "sequence": 3,
                     "m2o_module": code_generator_id.id,
                     "m2o_model": model_famille_alimentation_nourrisson.id,
                 },
@@ -186,6 +217,32 @@ for famille_alimentation_nourrisson in self:
         # form view
         if True:
             lst_item_view = []
+            # HEADER
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "header",
+                    "item_type": "field",
+                    "name": "fin_allaitement_different",
+                    "action_name": "fin_allaitement_different",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "header",
+                    "item_type": "button",
+                    "name": "action_fin_allaitement",
+                    "class_attr": "oe_highlight",
+                    "action_name": "action_fin_allaitement",
+                    "button_type": "oe_highlight",
+                    "label": "Fin allaitement",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
             # BODY
             view_item_body_group_1 = env["code.generator.view.item"].create(
                 {

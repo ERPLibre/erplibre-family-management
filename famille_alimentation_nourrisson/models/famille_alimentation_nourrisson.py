@@ -11,8 +11,15 @@ class FamilleAlimentationNourrisson(models.Model):
         " sein."
     )
 
+    _order = "date_debut desc"
+
     name = fields.Char(
         compute="_compute_name",
+    )
+
+    fin_allaitement_different = fields.Boolean(
+        compute="_compute_fin_allaitement_different",
+        store=True,
     )
 
     commentaire = fields.Text(
@@ -42,6 +49,9 @@ class FamilleAlimentationNourrisson(models.Model):
         help="Le bébé a fait des mictions avant/durant l'allaitement."
     )
 
+    def action_fin_allaitement(self):
+        self.write({"date_fin": fields.Datetime.now()})
+
     def _compute_access_url(self):
         super(FamilleAlimentationNourrisson, self)._compute_access_url()
         for famille_alimentation_nourrisson in self:
@@ -50,9 +60,20 @@ class FamilleAlimentationNourrisson(models.Model):
                 % famille_alimentation_nourrisson.id
             )
 
+    @api.depends("date_debut", "date_fin")
+    def _compute_fin_allaitement_different(self):
+        for record in self:
+            date_timedelta = record.date_fin - record.date_debut
+            # time is different if it's not 1 hour delta
+            record.fin_allaitement_different = (
+                date_timedelta.total_seconds() != 3600
+            )
+
     @api.depends("date_debut", "selles", "mictions")
     def _compute_name(self):
         for record in self:
-            record.name = (
-                f"{record.date_debut} S {record.selles} M {record.mictions}"
-            )
+            record.name = str(record.date_debut)
+            if record.selles:
+                record.name += " SELLE"
+            if record.mictions:
+                record.name += " MICTION"
