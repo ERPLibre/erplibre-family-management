@@ -101,7 +101,7 @@ def post_init_hook(cr, e):
             "fin_allaitement_different": {
                 "code_generator_compute": "_compute_fin_allaitement_different",
                 "code_generator_form_simple_view_sequence": 10,
-                "code_generator_sequence": 4,
+                "code_generator_sequence": 5,
                 "field_description": "Fin Allaitement Different",
                 "store": True,
                 "ttype": "boolean",
@@ -118,7 +118,7 @@ def post_init_hook(cr, e):
             },
             "name": {
                 "code_generator_compute": "_compute_name",
-                "code_generator_sequence": 5,
+                "code_generator_sequence": 4,
                 "field_description": "Name",
                 "ttype": "char",
             },
@@ -208,6 +208,95 @@ for famille_alimentation_nourrisson in self:
                     "sequence": 3,
                     "m2o_module": code_generator_id.id,
                     "m2o_model": model_famille_alimentation_nourrisson.id,
+                },
+            ]
+            env["code.generator.model.code"].create(lst_value)
+
+        # Add/Update Famille Medicament
+        model_model = "famille.medicament"
+        model_name = "famille_medicament"
+        lst_depend_model = ["portal.mixin"]
+        dct_model = {
+            "description": "famille_medicament",
+        }
+        dct_field = {
+            "name": {
+                "code_generator_form_simple_view_sequence": 10,
+                "code_generator_sequence": 3,
+                "code_generator_tree_view_sequence": 10,
+                "field_description": "Name",
+                "ttype": "char",
+            },
+        }
+        model_famille_medicament = code_generator_id.add_update_model(
+            model_model,
+            model_name,
+            dct_field=dct_field,
+            dct_model=dct_model,
+            lst_depend_model=lst_depend_model,
+        )
+
+        # Generate code
+        if True:
+            # Generate code model
+            lst_value = [
+                {
+                    "code": """super(FamilleMedicament, self)._compute_access_url()
+for famille_medicament in self:
+    famille_medicament.access_url = (
+        "/my/famille_medicament/%s" % famille_medicament.id
+    )""",
+                    "name": "_compute_access_url",
+                    "param": "self",
+                    "sequence": 0,
+                    "m2o_module": code_generator_id.id,
+                    "m2o_model": model_famille_medicament.id,
+                },
+            ]
+            env["code.generator.model.code"].create(lst_value)
+
+        # Add/Update Famille Medicament Nourisson
+        model_model = "famille.medicament.nourisson"
+        model_name = "famille_medicament_nourisson"
+        lst_depend_model = ["portal.mixin"]
+        dct_model = {
+            "description": "famille_medicament_nourisson",
+        }
+        dct_field = {
+            "name": {
+                "code_generator_form_simple_view_sequence": 10,
+                "code_generator_sequence": 3,
+                "code_generator_tree_view_sequence": 10,
+                "field_description": "Name",
+                "ttype": "char",
+            },
+        }
+        model_famille_medicament_nourisson = (
+            code_generator_id.add_update_model(
+                model_model,
+                model_name,
+                dct_field=dct_field,
+                dct_model=dct_model,
+                lst_depend_model=lst_depend_model,
+            )
+        )
+
+        # Generate code
+        if True:
+            # Generate code model
+            lst_value = [
+                {
+                    "code": """super(FamilleMedicamentNourisson, self)._compute_access_url()
+for famille_medicament_nourisson in self:
+    famille_medicament_nourisson.access_url = (
+        "/my/famille_medicament_nourisson/%s"
+        % famille_medicament_nourisson.id
+    )""",
+                    "name": "_compute_access_url",
+                    "param": "self",
+                    "sequence": 0,
+                    "m2o_module": code_generator_id.id,
+                    "m2o_model": model_famille_medicament_nourisson.id,
                 },
             ]
             env["code.generator.model.code"].create(lst_value)
@@ -990,6 +1079,588 @@ for famille_alimentation_nourrisson in self:
                     "m2o_model": model_famille_alimentation_nourrisson.id,
                     "view_item_ids": [(6, 0, lst_item_view)],
                     "id_name": "famille_alimentation_nourrisson_view_tree",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # act_window view
+        if True:
+            famille_alimentation_nourrisson_alimentation_nourrisson_action_window = env[
+                "code.generator.act_window"
+            ].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "name": "Alimentation nourrisson",
+                    "id_name": "famille_alimentation_nourrisson_alimentation_nourrisson_action_window",
+                    "model_name": "famille.alimentation.nourrisson",
+                }
+            )
+
+        # menu view
+        if True:
+            env["code.generator.menu"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "name": "Alimentation nourrisson",
+                    "id_name": "alimentation_nourrisson",
+                    "sequence": 1,
+                    "parent_id_name": "famille_alimentation_nourrisson.menu",
+                    "m2o_act_window": famille_alimentation_nourrisson_alimentation_nourrisson_action_window.id,
+                }
+            )
+            env["code.generator.menu"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "name": "Famille Alimentation Nourrisson",
+                    "web_icon": "famille_alimentation_nourrisson,static/description/icon.png",
+                    "id_name": "famille_alimentation_nourrisson",
+                    "sequence": 20,
+                    "ignore_act_window": True,
+                }
+            )
+            env["code.generator.menu"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "name": "Menu",
+                    "id_name": "menu",
+                    "sequence": 1,
+                    "parent_id_name": "famille_alimentation_nourrisson.famille_alimentation_nourrisson",
+                    "ignore_act_window": True,
+                }
+            )
+
+        # form view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item_body_group_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "group",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_group_1.id)
+
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "parent_id": view_item_body_group_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "form",
+                    "view_name": "famille_medicament_form",
+                    "view_attr_string": "Titre",
+                    "m2o_model": model_famille_medicament.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "has_body_sheet": True,
+                    "id_name": "famille_medicament_view_form",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # graph view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "type": "row",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "graph",
+                    "view_name": "famille_medicament_graph",
+                    "view_attr_string": "Famille medicament",
+                    "m2o_model": model_famille_medicament.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_view_graph",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # kanban view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_item_body_templates_2 = env[
+                "code.generator.view.item"
+            ].create(
+                {
+                    "section_type": "body",
+                    "item_type": "templates",
+                    "sequence": 2,
+                }
+            )
+            lst_item_view.append(view_item_body_templates_2.id)
+
+            view_item_body_t_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "t",
+                    "t_name": "kanban-box",
+                    "parent_id": view_item_body_templates_2.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_t_1.id)
+
+            view_item_body_div_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "div",
+                    "t_attf_class": "oe_kanban_global_click",
+                    "parent_id": view_item_body_t_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_div_1.id)
+
+            view_item_body_div_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "div",
+                    "class_attr": "oe_kanban_details",
+                    "parent_id": view_item_body_div_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_div_1.id)
+
+            view_item_body_ul_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "ul",
+                    "parent_id": view_item_body_div_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_ul_1.id)
+
+            view_item_body_li_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "li",
+                    "class_attr": "mb4",
+                    "parent_id": view_item_body_ul_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_li_1.id)
+
+            view_item_body_strong_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "strong",
+                    "parent_id": view_item_body_li_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_strong_1.id)
+
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "parent_id": view_item_body_strong_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "kanban",
+                    "view_name": "famille_medicament_kanban",
+                    "view_attr_class": "o_kanban_mobile",
+                    "m2o_model": model_famille_medicament.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_view_kanban",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # pivot view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "type": "row",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "pivot",
+                    "view_name": "famille_medicament_pivot",
+                    "view_attr_string": "Famille medicament",
+                    "m2o_model": model_famille_medicament.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_view_pivot",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # search view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "filter",
+                    "name": "name",
+                    "domain": "[('name','!=',False)]",
+                    "label": "Name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "search",
+                    "view_name": "famille_medicament_search",
+                    "view_attr_string": "Famille medicament",
+                    "m2o_model": model_famille_medicament.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_view_search",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # tree view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "tree",
+                    "view_name": "famille_medicament_tree",
+                    "m2o_model": model_famille_medicament.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_view_tree",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # form view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item_body_group_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "group",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_group_1.id)
+
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "parent_id": view_item_body_group_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "form",
+                    "view_name": "famille_medicament_nourisson_form",
+                    "view_attr_string": "Titre",
+                    "m2o_model": model_famille_medicament_nourisson.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "has_body_sheet": True,
+                    "id_name": "famille_medicament_nourisson_view_form",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # graph view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "type": "row",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "graph",
+                    "view_name": "famille_medicament_nourisson_graph",
+                    "view_attr_string": "Famille medicament nourisson",
+                    "m2o_model": model_famille_medicament_nourisson.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_nourisson_view_graph",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # kanban view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_item_body_templates_2 = env[
+                "code.generator.view.item"
+            ].create(
+                {
+                    "section_type": "body",
+                    "item_type": "templates",
+                    "sequence": 2,
+                }
+            )
+            lst_item_view.append(view_item_body_templates_2.id)
+
+            view_item_body_t_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "t",
+                    "t_name": "kanban-box",
+                    "parent_id": view_item_body_templates_2.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_t_1.id)
+
+            view_item_body_div_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "div",
+                    "t_attf_class": "oe_kanban_global_click",
+                    "parent_id": view_item_body_t_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_div_1.id)
+
+            view_item_body_div_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "div",
+                    "class_attr": "oe_kanban_details",
+                    "parent_id": view_item_body_div_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_div_1.id)
+
+            view_item_body_ul_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "ul",
+                    "parent_id": view_item_body_div_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_ul_1.id)
+
+            view_item_body_li_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "li",
+                    "class_attr": "mb4",
+                    "parent_id": view_item_body_ul_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_li_1.id)
+
+            view_item_body_strong_1 = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "strong",
+                    "parent_id": view_item_body_li_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item_body_strong_1.id)
+
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "parent_id": view_item_body_strong_1.id,
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "kanban",
+                    "view_name": "famille_medicament_nourisson_kanban",
+                    "view_attr_class": "o_kanban_mobile",
+                    "m2o_model": model_famille_medicament_nourisson.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_nourisson_view_kanban",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # pivot view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "type": "row",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "pivot",
+                    "view_name": "famille_medicament_nourisson_pivot",
+                    "view_attr_string": "Famille medicament nourisson",
+                    "m2o_model": model_famille_medicament_nourisson.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_nourisson_view_pivot",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # search view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "filter",
+                    "name": "name",
+                    "domain": "[('name','!=',False)]",
+                    "label": "Name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "search",
+                    "view_name": "famille_medicament_nourisson_search",
+                    "view_attr_string": "Famille medicament nourisson",
+                    "m2o_model": model_famille_medicament_nourisson.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_nourisson_view_search",
+                }
+            )
+            lst_view_id.append(view_code_generator.id)
+
+        # tree view
+        if True:
+            lst_item_view = []
+            # BODY
+            view_item = env["code.generator.view.item"].create(
+                {
+                    "section_type": "body",
+                    "item_type": "field",
+                    "name": "name",
+                    "action_name": "name",
+                    "sequence": 1,
+                }
+            )
+            lst_item_view.append(view_item.id)
+
+            view_code_generator = env["code.generator.view"].create(
+                {
+                    "code_generator_id": code_generator_id.id,
+                    "view_type": "tree",
+                    "view_name": "famille_medicament_nourisson_tree",
+                    "m2o_model": model_famille_medicament_nourisson.id,
+                    "view_item_ids": [(6, 0, lst_item_view)],
+                    "id_name": "famille_medicament_nourisson_view_tree",
                 }
             )
             lst_view_id.append(view_code_generator.id)
