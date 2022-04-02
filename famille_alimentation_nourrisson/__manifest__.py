@@ -11,6 +11,8 @@
         "security/ir.model.access.csv",
         "views/famille_alimentation_nourrisson.xml",
         "views/famille_alimentation_nourrisson_templates.xml",
+        "views/famille_medicament.xml",
+        "views/famille_medicament_nourisson.xml",
         "views/menu.xml",
     ],
     "installable": True,

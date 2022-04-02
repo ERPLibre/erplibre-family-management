@@ -31,7 +31,10 @@ def post_init_hook(cr, e):
 
         # TODO HUMAN: enable your functionality to generate
         value["enable_template_code_generator_demo"] = False
-        value["template_model_name"] = "famille.alimentation.nourrisson"
+        value["template_model_name"] = (
+            "famille.alimentation.nourrisson; famille.medicament;"
+            " famille.medicament.nourisson"
+        )
         value["template_inherit_model_name"] = ""
         value[
             "template_module_path_generated_extension"
